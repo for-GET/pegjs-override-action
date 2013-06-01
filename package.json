@@ -1,0 +1,32 @@
+{
+  "name": "pegjs-override-action",
+  "version": "0.0.1",
+  "author": "Andrei Neculau <@andreineculau>",
+  "description": "Override action (PEGjs plugin)",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/andreineculau/pegjs-override-action.git"
+  },
+  "keywords": [
+    "PEG",
+    "AST",
+    "plugin"
+  ],
+  "license": "MIT",
+  "engines": {
+    "node": "~0.8"
+  },
+  "dependencies": {
+  },
+  "devDependencies": {
+    "coffee-script": "~1.6.2",
+    "testem": "~0.2.70",
+    "mocha": "~1.8.1",
+    "chai": "~1.5.0",
+    "growl": "~1.7.0"
+  },
+  "scripts": {
+    "prepublish": "make prepublish",
+    "test": "make test"
+  }
+}
