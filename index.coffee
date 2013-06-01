@@ -32,7 +32,7 @@ module.exports = pass = (ast, options) ->
 
   return override ast, options  if isFunction override
 
-  for rule in rules
+  for rule, ruleIndex in rules
     newValue = override[rule.name]
     continue  unless newValue?
 

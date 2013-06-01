@@ -1,4 +1,4 @@
-.PHONY: all clean prepublish test ci
+.PHONY: all clean prepublish test testem
 
 all: index.js
 
