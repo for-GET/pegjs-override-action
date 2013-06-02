@@ -21,7 +21,23 @@ overrideAction = (rule, code) ->
       type: 'action'
       expression: rule
     }
-  rule.code = code
+
+  if rule.type is 'initializer'
+    console.log 123
+    wrappedCode = """
+      peg$overrideAction$scope = (function() {
+        #{code}
+        return this;
+      }).call({});
+    """
+  else
+    wrappedCode = """
+      return (function() {
+        #{code}
+      }).apply(peg$overrideAction$scope);
+    """
+
+  rule.code = wrappedCode
   rule
 
 
@@ -33,6 +49,7 @@ module.exports = pass = (ast, options) ->
   return override ast, options  if isFunction override
 
   for rule, ruleIndex in rules
+    console.log 123123  if rule.type is 'initializer'
     newValue = override[rule.name]
     continue  unless newValue?
 
