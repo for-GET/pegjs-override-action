@@ -45,7 +45,7 @@ module.exports = pass = (ast, options) ->
       for alternative, alternativeIndex in alternatives
         alternatives[alternativeIndex] = overrideAction alternative, newValue[alternativeIndex]
     else
-      rules[ruleIndex] = overrideAction rule, newValue
+      rule.expression = overrideAction rule.expression, newValue
   ast
 
 
