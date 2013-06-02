@@ -22,20 +22,11 @@ overrideAction = (rule, code) ->
       expression: rule
     }
 
-  if rule.type is 'initializer'
-    console.log 123
-    wrappedCode = """
-      peg$overrideAction$scope = (function() {
-        #{code}
-        return this;
-      }).call({});
-    """
-  else
-    wrappedCode = """
-      return (function() {
-        #{code}
-      }).apply(peg$overrideAction$scope);
-    """
+  wrappedCode = """
+    return (function() {
+      #{code}
+    }).apply(peg$overrideAction$scope);
+  """
 
   rule.code = wrappedCode
   rule
@@ -47,6 +38,16 @@ module.exports = pass = (ast, options) ->
   override = myOptions.rules
 
   return override ast, options  if isFunction override
+
+  ast.initializer ?=
+    type: 'initializer'
+    code: ''
+  ast.initializer.code = """
+    peg$overrideAction$scope = (function() {
+      #{ast.initializer.code}
+      return this;
+    }).call({});
+  """
 
   for rule, ruleIndex in rules
     console.log 123123  if rule.type is 'initializer'
