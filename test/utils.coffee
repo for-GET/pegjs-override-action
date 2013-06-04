@@ -1,4 +1,8 @@
+_ = require 'lodash'
 chai = require 'chai'
 chai.Assertion.includeStack = true
 
-exports.should = chai.should()
+module.exports = {
+  _
+  should: chai.should()
+}

@@ -1,4 +1,4 @@
-{should} = require './utils'
+{_, should} = require './utils'
 plugin = require '../index.coffee' # dont prioritize the .js file
 
 describe 'override action plugin', () ->
@@ -53,7 +53,11 @@ describe 'override action plugin', () ->
 
   describe 'success', () ->
     fun = () -> "0"
-    funBody = '\n        return \"0\";\n      ' # FIXME flaky job
+    # FIXME flaky job
+    funBody = '\n        return \"0\";\n      '
+    safeFunBody = funBody.replace /\/\"/g, '\\\"'
+    wrappedFunBody = "return (function() {\n  #{safeFunBody}\n}).apply(peg$overrideAction$scope);"
+    # FIXME end
 
     ast =
       rules: [{
@@ -74,9 +78,12 @@ describe 'override action plugin', () ->
           type: 'choice'
           alternatives: [{
             type: 'action'
-            code: funBody
+            code: wrappedFunBody
           }]
       }]
+      initializer:
+        type: 'initializer'
+        code: 'peg$overrideAction$scope = (function() {\n  \n  return this;\n}).call({});'
 
 
     it 'should accept functions as code', () ->
@@ -87,7 +94,7 @@ describe 'override action plugin', () ->
               fun
             ]
 
-      plugin(ast, options).should.eql expectedAst
+      plugin(_.cloneDeep(ast), options).should.eql expectedAst
 
 
     it 'should accept body functions as code', () ->
@@ -98,4 +105,4 @@ describe 'override action plugin', () ->
               funBody
             ]
 
-      plugin(ast, options).should.eql expectedAst
+      plugin(_.cloneDeep(ast), options).should.eql expectedAst
