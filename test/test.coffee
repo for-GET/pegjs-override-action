@@ -55,8 +55,6 @@ describe 'override action plugin', () ->
     fun = () -> "0"
     # FIXME flaky job
     funBody = '\n        return \"0\";\n      '
-    safeFunBody = funBody.replace /\/\"/g, '\\\"'
-    wrappedFunBody = "return (function() {\n  #{safeFunBody}\n}).apply(peg$overrideAction$scope);"
     # FIXME end
 
     ast =
@@ -78,12 +76,9 @@ describe 'override action plugin', () ->
           type: 'choice'
           alternatives: [{
             type: 'action'
-            code: wrappedFunBody
+            code: funBody
           }]
       }]
-      initializer:
-        type: 'initializer'
-        code: 'peg$overrideAction$scope = (function() {\n  \n  return this;\n}).call({});'
 
 
     it 'should accept functions as code', () ->
