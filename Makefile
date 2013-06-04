@@ -12,6 +12,9 @@ clean:
 prepublish: clean all
 
 test:
+	@mocha --reporter spec test
+
+tap:
 	@testem ci
 
 testem:
