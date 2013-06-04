@@ -35,7 +35,7 @@ overrideAction = (rule, code) ->
 module.exports = pass = (ast, options) ->
   myOptions = options.overrideActionPlugin
   rules = ast.rules
-  override = myOptions.rules
+  override = myOptions.rules or {}
 
   return override ast, options  if isFunction override
 
