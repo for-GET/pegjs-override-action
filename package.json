@@ -1,6 +1,6 @@
 {
   "name": "pegjs-override-action",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "author": "Andrei Neculau <@andreineculau>",
   "description": "Override action (PEGjs plugin)",
   "repository": {
@@ -16,8 +16,7 @@
   "engines": {
     "node": "~0.8"
   },
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
     "coffee-script": "~1.6.2",
     "lodash": "~1.2.1",
