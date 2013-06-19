@@ -1,4 +1,4 @@
-# pegjs-override-action
+# PEGjs override action
 
 Override action ([PEGjs](https://github.com/dmajda/pegjs) plugin)
 
@@ -40,4 +40,4 @@ parser.parse 'd' # 'd'
 
 ## License
 
-MIT
+[Apache 2.0](LICENSE)

@@ -1,5 +1,8 @@
-{_, should} = require './utils'
-plugin = require '../index.coffee' # dont prioritize the .js file
+{
+  _
+  should
+} = require './_utils'
+plugin = require '../src/plugin'
 
 describe 'override action plugin', () ->
   describe 'basics', () ->
@@ -11,24 +14,6 @@ describe 'override action plugin', () ->
   describe 'errors', () ->
     it 'should throw an error if no plugin options are defined', () ->
       should.Throw () -> plugin.use {}, {}
-
-
-    it 'should throw an errro when alternatives are required', () ->
-      ast =
-        rules: [{
-          type: 'expression'
-          name: 'start'
-          expression:
-            type: 'choice'
-            alternatives: []
-        }]
-
-      options =
-        overrideActionPlugin:
-          rules:
-            start: ""
-
-      should.Throw () -> plugin ast, options
 
 
     it 'should throw an error when alternatives.length doesnt match', () ->
