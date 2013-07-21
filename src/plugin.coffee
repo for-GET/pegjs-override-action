@@ -5,43 +5,7 @@ isFunction = (obj) ->
   toString.call(obj) is '[object Function]'
 
 
-funToString = (fun) ->
-  fun = fun.toString()
-  bodyStarts = fun.indexOf('{') + 1
-  bodyEnds = fun.lastIndexOf '}'
-  fun.substring bodyStarts, bodyEnds
-
-
-action$ = () ->
-  join = (arr) -> arr.join ''
-  recursiveJoin = (value) ->
-    if Array.isArray value
-      value = value.map recursiveJoin
-      value = join value
-    value
-  recursiveJoin __result
-
-
-actionIgnore = () ->
-  ''
-
-
-overrideAction = (rule, code) ->
-  code = action$  if code is '__$__'
-  code = actionIgnore  if code is '__ignore__'
-  code = funToString code  if isFunction code
-  return rule  if code is undefined
-  if rule.type isnt 'action'
-    rule = {
-      type: 'action'
-      expression: rule
-    }
-
-  rule.code = code
-  rule
-
-
-module.exports = pass = (ast, options) ->
+exports = module.exports = pass = (ast, options) ->
   myOptions = options.overrideActionPlugin
   rules = ast.rules
   override = myOptions.rules or {}
@@ -58,16 +22,52 @@ module.exports = pass = (ast, options) ->
       if alternatives.length isnt newValue.length
         throw new Error "Rule #{rule.name} mismatch (alternatives #{alternatives.length} != #{newValue.length}"
       for alternative, alternativeIndex in alternatives
-        alternatives[alternativeIndex] = overrideAction alternative, newValue[alternativeIndex]
+        alternatives[alternativeIndex] = exports.overrideAction alternative, newValue[alternativeIndex]
     else if not newValueIsArray
-      rule.expression = overrideAction rule.expression, newValue
+      rule.expression = exports.overrideAction rule.expression, newValue
     else
       throw new Error "Rule #{rule.name} mismatch (needs no alternatives)"
   ast
 
 
-module.exports.use = (config, options = {}) ->
+exports.use = (config, options = {}) ->
   unless options.overrideActionPlugin?
     throw new Error 'Please define overrideActionPlugin as an option to PEGjs'
   stage = config.passes.transform
   stage.unshift pass
+
+
+exports.funToString = (fun) ->
+  fun = fun.toString()
+  bodyStarts = fun.indexOf('{') + 1
+  bodyEnds = fun.lastIndexOf '}'
+  fun.substring bodyStarts, bodyEnds
+
+
+exports.action$ = () ->
+  join = (arr) -> arr.join ''
+  recursiveJoin = (value) ->
+    if Array.isArray value
+      value = value.map recursiveJoin
+      value = join value
+    value
+  recursiveJoin __result
+
+
+exports.actionIgnore = () ->
+  ''
+
+
+exports.overrideAction = (rule, code) ->
+  code = exports.funToString code  if isFunction code
+  code = exports.action$  if code is '__$__'
+  code = exports.actionIgnore  if code is '__ignore__'
+  return rule  if code is undefined
+  if rule.type isnt 'action'
+    rule = {
+      type: 'action'
+      expression: rule
+    }
+
+  rule.code = code
+  rule
