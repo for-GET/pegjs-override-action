@@ -32,7 +32,7 @@ parser = PEG.buildParser "start = 'a' / 'b' / 'c' / 'd' { return 'd' }",
       ]
 
 parser.parse 'a' # 'b'
-parser.parse 'a' # 'b'
+parser.parse 'b' # 'a'
 parser.parse 'c' # 'c'
 parser.parse 'd' # 'd'
 ```
