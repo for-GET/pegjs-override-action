@@ -12,10 +12,25 @@ funToString = (fun) ->
   fun.substring bodyStarts, bodyEnds
 
 
+action$ = () ->
+  join = (arr) -> arr.join ''
+  recursiveJoin = (value) ->
+    if Array.isArray value
+      value = value.map recursiveJoin
+      value = join value
+    value
+  recursiveJoin __result
+
+
+actionIgnore = () ->
+  ''
+
+
 overrideAction = (rule, code) ->
-  return rule  if code is undefined
+  code = action$  if code is '__$__'
+  code = actionIgnore  if code is '__ignore__'
   code = funToString code  if isFunction code
-  return rule  if code is '__skip__'
+  return rule  if code is undefined
   if rule.type isnt 'action'
     rule = {
       type: 'action'
