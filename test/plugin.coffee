@@ -3,6 +3,11 @@
   should
 } = require './_utils'
 plugin = require '../src/plugin'
+actionFun = (fun) ->
+  fun = plugin.funToString fun
+  eval "fun = function(__result){#{fun}}"
+  fun
+
 
 describe 'override action plugin', () ->
   describe 'basics', () ->
@@ -86,3 +91,19 @@ describe 'override action plugin', () ->
             ]
 
       plugin(_.cloneDeep(ast), options).should.eql expectedAst
+
+
+  describe '.action$', () ->
+    it 'should let a string alone', () ->
+      actionFun(plugin.action$)('test').should.eql 'test'
+
+    it 'should join an array without any separator', () ->
+      actionFun(plugin.action$)(['te', 'st']).should.eql 'test'
+
+    it 'should handle mixed values', () ->
+      actionFun(plugin.action$)([['t', ['', 'e']], 'st']).should.eql 'test'
+
+
+  describe '.actionIgnore', () ->
+    it 'should return empty string', () ->
+      actionFun(plugin.actionIgnore)('test').should.eql ''
