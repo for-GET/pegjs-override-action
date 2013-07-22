@@ -20,21 +20,23 @@ npm install pegjs-override-action
 peg = require 'peg'
 overrideAction = require 'pegjs-override-action'
 
-parser = PEG.buildParser "start = 'a' / 'b' / 'c' / 'd' { return 'd' }",
+parser = PEG.buildParser "start = 'a' / 'b' / 'c' / 'd' { return 'd' } / 'e' 'f'",
   plugins: [overrideAction]
   overrideActionPlugin:
     rules:
       start: [
         () -> "b"
         "return 'a';"
+        '__ignore__'        
         undefined
-        '__skip__' # equivalent to undefined atm
+        '__$__'
       ]
 
 parser.parse 'a' # 'b'
 parser.parse 'b' # 'a'
-parser.parse 'c' # 'c'
+parser.parse 'c' # '' , normally would return 'c'
 parser.parse 'd' # 'd'
+parser.parse 'e' # 'e', normally would return ['e', '']
 ```
 
 
