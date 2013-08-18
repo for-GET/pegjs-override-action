@@ -11,12 +11,10 @@
     "type": "git",
     "url": "git://github.com/andreineculau/pegjs-override-action.git"
   },
-  "licenses": [
-    {
-      "type": "Apache-2.0",
-      "url": "http://www.apache.org/licenses/LICENSE-2.0"
-    }
-  ],
+  "licenses": [{
+    "type": "Apache-2.0",
+    "url": "http://www.apache.org/licenses/LICENSE-2.0"
+  }],
   "scripts": {
     "prepublish": "make prepublish",
     "test": "make test"
