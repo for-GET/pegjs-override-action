@@ -7,13 +7,22 @@ isFunction = (obj) ->
 
 exports = module.exports = pass = (ast, options) ->
   myOptions = options.overrideActionPlugin
+  initializer = ast.initializer
+  overrideInitializer = myOptions.initializer
   rules = ast.rules
-  override = myOptions.rules or {}
+  overrideRules = myOptions.rules or {}
 
-  return override ast, options  if isFunction override
+  if overrideInitializer
+    overrideInitializer = exports.funToString overrideInitializer  if isFunction overrideInitializer
+    ast.initializer = {
+      type: 'initializer'
+      code: overrideInitializer
+    }
+
+  return overrideRules ast, options  if isFunction overrideRules
 
   for rule, ruleIndex in rules
-    newValue = override[rule.name]
+    newValue = overrideRules[rule.name]
     newValueIsArray = Array.isArray newValue
     continue  unless newValue?
 

@@ -70,6 +70,12 @@ describe 'override action plugin', () ->
           }]
       }]
 
+    expectedInitializerAst =
+      initializer:
+        type: 'initializer'
+        code: funBody
+      rules: ast.rules
+
 
     it 'should accept functions as code', () ->
       options =
@@ -91,6 +97,22 @@ describe 'override action plugin', () ->
             ]
 
       plugin(_.cloneDeep(ast), options).should.eql expectedAst
+
+
+    it 'should accept function as initializer', () ->
+      options =
+        overrideActionPlugin:
+          initializer: fun
+
+      plugin(_.cloneDeep(ast), options).should.eql expectedInitializerAst
+
+
+    it 'should accept body functions as code', () ->
+      options =
+        overrideActionPlugin:
+          initializer: funBody
+
+      plugin(_.cloneDeep(ast), options).should.eql expectedInitializerAst
 
 
   describe '.action$', () ->
