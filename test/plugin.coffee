@@ -114,6 +114,42 @@ describe 'override action plugin', () ->
 
       plugin(_.cloneDeep(ast), options).should.eql expectedInitializerAst
 
+    it 'should accept named rule', () ->
+      ast =
+        rules: [{
+          type: 'rule'
+          name: 'start'
+          expression:
+            type: 'named'
+            name : 'first rule'
+            expression:
+              type: 'literal'
+              value: 'first'
+              ignoreCase: false
+        }]
+
+      expectedAst =
+        rules: [{
+          type: 'rule'
+          name: 'start'
+          expression:
+            type: 'named'
+            name: 'first rule'
+            expression:
+              type: 'action'
+              expression:
+                type: 'literal'
+                value: 'first'
+                ignoreCase: false
+              code: funBody
+        }]
+
+      options =
+        overrideActionPlugin:
+          rules:
+            start: funBody
+
+      plugin(_.cloneDeep(ast), options).should.eql expectedAst
 
   describe '.action$', () ->
     it 'should let a string alone', () ->

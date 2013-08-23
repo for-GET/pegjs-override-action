@@ -26,16 +26,18 @@ exports = module.exports = pass = (ast, options) ->
     newValueIsArray = Array.isArray newValue
     continue  unless newValue?
 
+    ruleName = rule.name
+    rule = rule.expression if rule.expression.type == 'named'
     if newValueIsArray and rule.expression.type is 'choice'
       alternatives = rule.expression.alternatives
       if alternatives.length isnt newValue.length
-        throw new Error "Rule #{rule.name} mismatch (alternatives #{alternatives.length} != #{newValue.length}"
+        throw new Error "Rule #{ruleName} mismatch (alternatives #{alternatives.length} != #{newValue.length}"
       for alternative, alternativeIndex in alternatives
         alternatives[alternativeIndex] = exports.overrideAction alternative, newValue[alternativeIndex]
     else if not newValueIsArray
       rule.expression = exports.overrideAction rule.expression, newValue
     else
-      throw new Error "Rule #{rule.name} mismatch (needs no alternatives)"
+      throw new Error "Rule #{ruleName} mismatch (needs no alternatives)"
   ast
 
 
