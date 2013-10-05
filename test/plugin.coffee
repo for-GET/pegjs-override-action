@@ -52,104 +52,75 @@ describe 'override action plugin', () ->
         type: 'expression'
         name: 'start'
         expression:
-          type: 'choice'
-          alternatives: [{
-            type: 'action'
-          }]
-      }]
-
-    expectedAst =
-      rules: [{
-        type: 'expression'
-        name: 'start'
-        expression:
-          type: 'choice'
-          alternatives: [{
-            type: 'action'
-            code: funBody
-          }]
-      }]
-
-    expectedInitializerAst =
-      initializer:
-        type: 'initializer'
-        code: funBody
-      rules: ast.rules
-
-
-    it 'should accept functions as code', () ->
-      options =
-        overrideActionPlugin:
-          rules:
-            start: [
-              fun
-            ]
-
-      plugin(_.cloneDeep(ast), options).should.eql expectedAst
-
-
-    it 'should accept body functions as code', () ->
-      options =
-        overrideActionPlugin:
-          rules:
-            start: [
-              funBody
-            ]
-
-      plugin(_.cloneDeep(ast), options).should.eql expectedAst
-
-
-    it 'should accept function as initializer', () ->
-      options =
-        overrideActionPlugin:
-          initializer: fun
-
-      plugin(_.cloneDeep(ast), options).should.eql expectedInitializerAst
-
-
-    it 'should accept body functions as code', () ->
-      options =
-        overrideActionPlugin:
-          initializer: funBody
-
-      plugin(_.cloneDeep(ast), options).should.eql expectedInitializerAst
-
-    it 'should accept named rule', () ->
-      ast =
-        rules: [{
-          type: 'rule'
-          name: 'start'
+          type: 'named'
+          name: 'start rule'
           expression:
-            type: 'named'
-            name : 'first rule'
-            expression:
-              type: 'literal'
-              value: 'first'
-              ignoreCase: false
-        }]
+            type: 'choice'
+            alternatives: [{
+              type: 'action'
+            }]
+      }]
 
+    describe 'code', () ->
       expectedAst =
         rules: [{
-          type: 'rule'
+          type: 'expression'
           name: 'start'
           expression:
             type: 'named'
-            name: 'first rule'
+            name: 'start rule'
             expression:
-              type: 'action'
-              expression:
-                type: 'literal'
-                value: 'first'
-                ignoreCase: false
-              code: funBody
+              type: 'choice'
+              alternatives: [{
+                type: 'action'
+                code: funBody
+              }]
         }]
 
-      options =
-        overrideActionPlugin:
-          rules:
-            start: funBody
+      it 'should accept a function', () ->
+        options =
+          overrideActionPlugin:
+            rules:
+              start: [
+                fun
+              ]
 
-      plugin(_.cloneDeep(ast), options).should.eql expectedAst
+        plugin(_.cloneDeep(ast), options).should.eql expectedAst
+
+
+      it 'should accept a functions body', () ->
+        options =
+          overrideActionPlugin:
+            rules:
+              start: [
+                funBody
+              ]
+
+        plugin(_.cloneDeep(ast), options).should.eql expectedAst
+
+
+    describe 'initializer', () ->
+      expectedInitializerAst =
+        initializer:
+          type: 'initializer'
+          code: funBody
+        rules: ast.rules
+
+      it 'should accept a function', () ->
+        options =
+          overrideActionPlugin:
+            initializer: fun
+
+        plugin(_.cloneDeep(ast), options).should.eql expectedInitializerAst
+
+
+      it 'should accept a function body', () ->
+        options =
+          overrideActionPlugin:
+            initializer: funBody
+
+        plugin(_.cloneDeep(ast), options).should.eql expectedInitializerAst
+
 
   describe '.action$', () ->
     it 'should let a string alone', () ->
