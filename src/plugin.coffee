@@ -27,7 +27,9 @@ exports = module.exports = pass = (ast, options) ->
     continue  unless newValue?
 
     ruleName = rule.name
-    rule = rule.expression if rule.expression.type == 'named'
+    if rule.expression.type == 'named'
+      ruleName += " \"#{rule.name}\""
+      rule = rule.expression
     if newValueIsArray and rule.expression.type is 'choice'
       alternatives = rule.expression.alternatives
       if alternatives.length isnt newValue.length
