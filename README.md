@@ -47,4 +47,4 @@ When defining an action as a function, it will be stringified and injected into 
 
 ## License
 
-[Apache 2.0](LICENSE)
+[UNLICENSE](LICENSE)
