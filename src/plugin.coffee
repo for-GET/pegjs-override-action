@@ -1,8 +1,4 @@
-toString = {}.toString
-
-
-isFunction = (obj) ->
-  toString.call(obj) is '[object Function]'
+_ = require 'lodash'
 
 
 exports = module.exports = pass = (ast, options) ->
@@ -13,13 +9,13 @@ exports = module.exports = pass = (ast, options) ->
   overrideRules = myOptions.rules or {}
 
   if overrideInitializer
-    overrideInitializer = exports.funToString overrideInitializer  if isFunction overrideInitializer
+    overrideInitializer = exports.funToString overrideInitializer  if _.isFunction overrideInitializer
     ast.initializer = {
       type: 'initializer'
       code: overrideInitializer
     }
 
-  return overrideRules ast, options  if isFunction overrideRules
+  return overrideRules ast, options  if _.isFunction overrideRules
 
   for rule, ruleIndex in rules
     newValue = overrideRules[rule.name]
@@ -72,7 +68,7 @@ exports.actionIgnore = () ->
 
 
 exports.overrideAction = (rule, code) ->
-  code = exports.funToString code  if isFunction code
+  code = exports.funToString code  if _.isFunction code
   code = exports.action$  if code is '__$__'
   code = exports.actionIgnore  if code is '__ignore__'
   return rule  if code is undefined
