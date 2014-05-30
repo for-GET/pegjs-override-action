@@ -89,7 +89,7 @@ exports.makeBuildParser = ({grammar, initializer, rules, mixins, PEG}) ->
     options ?= {}
     _.assign options, {
       allowedStartRules: [startRule]
-      plugins: [overrideAction]
+      plugins: [exports]
       overrideActionPlugin: {
         initializer
         rules
