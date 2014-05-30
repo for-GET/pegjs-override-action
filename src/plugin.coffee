@@ -80,3 +80,37 @@ exports.overrideAction = (rule, code) ->
 
   rule.code = code
   rule
+
+
+exports.makeBuildParser = ({grammar, initializer, rules, mixins, PEG}) ->
+  mixins ?= []
+  _.defaults rules, mixin  for mixin in mixins
+  mod = ({startRule, options}) ->
+    options ?= {}
+    _.assign options, {
+      allowedStartRules: [startRule]
+      plugins: [overrideAction]
+      overrideActionPlugin: {
+        initializer
+        rules
+      }
+    }
+
+    # FIXME pegjs should throw an exception if startRule is not defined
+    {parse} = PEG.buildParser grammar, options
+
+    fun = (input) ->
+      parse input, {startRule}
+    fun._ = {
+      grammar
+      options
+    }
+    fun
+
+  mod._ = {
+    grammar
+    initializer
+    rules
+  }
+
+  mod

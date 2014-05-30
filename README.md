@@ -17,7 +17,7 @@ npm install pegjs-override-action
 ```
 
 ```coffee
-peg = require 'peg'
+PEG = require 'pegjs'
 overrideAction = require 'pegjs-override-action'
 
 parser = PEG.buildParser "start = 'a' / 'b' / 'c' / 'd' { return 'd' } / 'e'",
@@ -44,6 +44,38 @@ parser.parse 'e' # e.g. 1.3.1
 
 When defining an action as a function, it will be stringified and injected into a different scope, which breaks variable closure. Any data or functions that need to be shared between rule actions should be defined in your initializer block. When using `require` in your actions or initializer, it is a good idea to resolve an absolute path (e.g. using `require.resolve` as the code is also executed in a different path than where it is defined.
 
+
+### Convenience
+
+```coffee
+PEG = require 'pegjs'
+{makeBuildParser} = require 'pegjs-override-action'
+
+buildParser = makeParser {
+  PEG
+  grammar: "start = 'a' / 'b' / 'c' / 'd' { return 'd' } / 'e'"
+  initializer: "_ = require('lodash');"
+  rules:
+    start: [
+      () -> "b"
+      "return 'a';"
+      undefined
+      '__skip__' # equivalent to undefined atm
+      () -> _.VERSION
+    ]
+  mixins: {} # list of default rules
+
+parser = buildParser {
+  startRule: 'start'
+  options: {} #
+}
+
+parser.parse 'a' # 'b'
+parser.parse 'b' # 'a'
+parser.parse 'c' # 'c'
+parser.parse 'd' # 'd'
+parser.parse 'e' # e.g. 1.3.1
+```
 
 ## License
 
