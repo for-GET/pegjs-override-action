@@ -99,19 +99,29 @@ exports.makeBuildParser = ({grammar, initializer, rules, mixins, PEG}) ->
     }
 
     parser = PEG.buildParser grammar, options
-    return parser  if options.output is 'source'
+    if options.output is 'source'
+      return """(function(){
+      var original = #{parser};
+        var fun = original.parse;
+        fun.SyntaxError = original.SyntaxError;
+        fun.parse = original.parse;
+        return fun;
+      })()
+      """
 
     # FIXME pegjs should throw an exception if startRule is not defined
-    {SyntaxError, parse} = parser
+    parser._parse = parser.parse
 
-    fun = (input) ->
-      parse input, {startRule}
-    fun._ = {
+    parser.parse = (input, options = {}) ->
+      _.defaults options, {
+        startRule
+      }
+      parser._parse input, options
+    parser._ = {
       grammar
       options
     }
-    fun.SyntaxError = SyntaxError
-    fun
+    parser
 
   mod._ = {
     grammar
