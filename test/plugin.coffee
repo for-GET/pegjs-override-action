@@ -103,7 +103,7 @@ describe 'override action plugin', () ->
       expectedInitializerAst =
         initializer:
           type: 'initializer'
-          code: funBody
+          code: "(function(){#{funBody}})();"
         rules: ast.rules
 
       it 'should accept a function', () ->
@@ -117,7 +117,7 @@ describe 'override action plugin', () ->
       it 'should accept a function body', () ->
         options =
           overrideActionPlugin:
-            initializer: funBody
+            initializer: "(function(){#{funBody}})();"
 
         plugin(_.cloneDeep(ast), options).should.eql expectedInitializerAst
 

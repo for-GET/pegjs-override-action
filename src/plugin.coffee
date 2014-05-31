@@ -9,7 +9,9 @@ exports = module.exports = pass = (ast, options) ->
   overrideRules = myOptions.rules or {}
 
   if overrideInitializer
-    overrideInitializer = exports.funToString overrideInitializer  if _.isFunction overrideInitializer
+    if _.isFunction overrideInitializer
+      overrideInitializer = exports.funToString overrideInitializer
+      overrideInitializer = "(function(){#{overrideInitializer}})();"
     ast.initializer = {
       type: 'initializer'
       code: overrideInitializer
