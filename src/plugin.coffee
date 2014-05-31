@@ -110,7 +110,10 @@ exports.makeBuildParser = ({grammar, initializer, rules, mixins, PEG}) ->
       """
 
     # FIXME pegjs should throw an exception if startRule is not defined
-    parser._parse = parser.parse
+    {SyntaxError, parse} = parser
+    parser = parse
+    parser._parse = parse
+    parser.SyntaxError = SyntaxError
 
     parser.parse = (input, options = {}) ->
       _.defaults options, {
