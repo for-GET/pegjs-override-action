@@ -98,8 +98,11 @@ exports.makeBuildParser = ({grammar, initializer, rules, mixins, PEG}) ->
       }
     }
 
+    parser = PEG.buildParser grammar, options
+    return parser  if options.output is 'source'
+
     # FIXME pegjs should throw an exception if startRule is not defined
-    {parse} = PEG.buildParser grammar, options
+    {SyntaxError, parse} = parser
 
     fun = (input) ->
       parse input, {startRule}
@@ -107,6 +110,7 @@ exports.makeBuildParser = ({grammar, initializer, rules, mixins, PEG}) ->
       grammar
       options
     }
+    fun.SyntaxError = SyntaxError
     fun
 
   mod._ = {
