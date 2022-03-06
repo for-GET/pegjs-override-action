@@ -1,7 +1,7 @@
 {
   "name": "pegjs-override-action",
   "description": "Override action (PEGjs plugin)",
-  "version": "0.3.1",
+  "version": "0.4.0",
   "license": "Unlicense",
   "scripts": {
     "test": "jest"
