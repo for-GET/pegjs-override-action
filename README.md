@@ -15,7 +15,7 @@ E.g. [A collection of core PEGjs grammars (RFC, ISO, etc.)](https://github.com/f
 ## Usage
 
 ```bash
-npm install pegjs-override-action
+npm install git://github.com/for-GET/pegjs-override-action.git#semver:~0.5
 ```
 
 See [index.example1.test.js](./index.example1.test.js)
