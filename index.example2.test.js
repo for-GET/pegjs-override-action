@@ -7,7 +7,7 @@ describe('example2 - convenience makeBuildParser', function() {
     let buildParser = plugin.makeBuildParser({
       PEG,
       grammar: "start = 'a' / 'b' / 'c' / 'd' { return 'd' } / 'e'",
-      initializer: "_ = require('lodash');",
+      initializer: "var _ = require('lodash');",
       rules: {
         start: [
           function() {

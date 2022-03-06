@@ -7,7 +7,7 @@ describe('example1', function() {
     let parser = PEG.buildParser("start = 'a' / 'b' / 'c' / 'd' { return 'd' } / 'e'", {
       plugins: [plugin],
       overrideActionPlugin: {
-        initializer: "_ = require('lodash');",
+        initializer: "var _ = require('lodash');",
         rules: {
           start: [
             function() {
