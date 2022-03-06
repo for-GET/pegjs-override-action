@@ -4,7 +4,7 @@ let plugin = require('./');
 
 describe('example1', function() {
   it('should work', function() {
-    let parser = PEG.buildParser("start = 'a' / 'b' / 'c' / 'd' { return 'd' } / 'e'", {
+    let parser = PEG.generate("start = 'a' / 'b' / 'c' / 'd' { return 'd' } / 'e'", {
       plugins: [plugin],
       overrideActionPlugin: {
         initializer: "var _ = require('lodash');",

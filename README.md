@@ -19,7 +19,7 @@ npm install pegjs-override-action
 ```
 
 See [index.example1.test.js](./index.example1.test.js)
-and a convenient function `.makeBuildParser` in [index.example2.test.js](./index.example2.test.js).
+and a convenient function `.makeGenerate` in [index.example2.test.js](./index.example2.test.js).
 
 ## Scopes and require paths
 

@@ -118,7 +118,7 @@ pass.overrideAction = function(rule, code) {
 };
 
 
-pass.makeBuildParser = function({grammar, initializer, rules, mixins, PEG}) {
+pass.makeGenerate = function({grammar, initializer, rules, mixins, PEG}) {
   mixins = _.defaultTo(mixins, []);
   rules = _.clone(rules);
   _.forEach(mixins, function(mixin) {
@@ -136,7 +136,7 @@ pass.makeBuildParser = function({grammar, initializer, rules, mixins, PEG}) {
       }
     });
 
-    let parser = PEG.buildParser(grammar, options);
+    let parser = PEG.generate(grammar, options);
     if (options.output === 'source') {
       return `(function(){
   let original = ${parser};

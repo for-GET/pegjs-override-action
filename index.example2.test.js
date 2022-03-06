@@ -2,9 +2,9 @@ let _ = require('lodash');
 let PEG = require('pegjs');
 let plugin = require('./');
 
-describe('example2 - convenience makeBuildParser', function() {
+describe('example2 - convenience makeGenerate', function() {
   it('should work', function() {
-    let buildParser = plugin.makeBuildParser({
+    let generate = plugin.makeGenerate({
       PEG,
       grammar: "start = 'a' / 'b' / 'c' / 'd' { return 'd' } / 'e'",
       initializer: "var _ = require('lodash');",
@@ -24,7 +24,7 @@ describe('example2 - convenience makeBuildParser', function() {
       mixins: {} // list of default rules
     });
 
-    let parser = buildParser({
+    let parser = generate({
       startRule: 'start',
       options: {}
     });
