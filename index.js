@@ -129,7 +129,7 @@ pass.makeBuildParser = function({grammar, initializer, rules, mixins, PEG}) {
     options = _.defaultTo(options, {});
     _.assign(options, {
       allowedStartRules: [startRule],
-      plugins: [exports],
+      plugins: [pass],
       overrideActionPlugin: {
         initializer,
         rules
