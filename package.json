@@ -10,6 +10,7 @@
     "lodash": "~4.17.21"
   },
   "devDependencies": {
+    "pegjs": "git://github.com/andreineculau/pegjs.git#master-2022-v0.8.0",
     "jest": "^27.5.1"
   }
 }

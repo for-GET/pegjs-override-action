@@ -1,5 +1,6 @@
 let _ = require('lodash');
 let plugin = require('./');
+
 let actionFun = function(fun) {
   fun = plugin.funToString(fun);
   eval(`fun = function(__result){${fun}}`);
