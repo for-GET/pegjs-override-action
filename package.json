@@ -1,39 +1,15 @@
 {
   "name": "pegjs-override-action",
   "description": "Override action (PEGjs plugin)",
-  "keywords": [
-    "PEG",
-    "AST",
-    "plugin"
-  ],
   "version": "0.2.3",
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/andreineculau/pegjs-override-action.git"
-  },
-  "licenses": [
-    {
-      "type": "Unlicense",
-      "url": "http://unlicense.org/UNLICENSE"
-    }
-  ],
+  "license": "Unlicense",
   "scripts": {
-    "prepublish": "make prepublish",
-    "test": "make test"
+    "test": "jest"
   },
   "dependencies": {
-    "lodash": "~2.4.1"
-  },
-  "optionalDependencies": {
-    "coffee-script": "~1.7.1"
+    "lodash": "~4.17.21"
   },
   "devDependencies": {
-    "chai": "~1.9.1",
-    "coffeelint": "~1.5.1",
-    "mocha": "~1.20.0",
-    "testem": "~0.6.16"
-  },
-  "publishConfig": {
-    "optionalDependencies": {}
+    "jest": "^27.5.1"
   }
 }
